@@ -782,7 +782,7 @@ Prior to executing code in the landing pad, the unwind library restores
 registers not altered by the personality routine, using the context
 record, to their state in that frame before the call that threw the exception,
 as follows. All registers specified as callee-saved by the base ABI are
-restored, as well as scratch registers \RDI, \RSI, \RDX, \RCX (see below).
+restored, as well as scratch registers \RAX, \RDX (see below).
 Except for those exceptions, scratch (or caller-saved) registers are not
 preserved, and their contents are undefined on transfer.
 
@@ -808,8 +808,8 @@ be the \code{exceptionObject} pointer, which must be preserved to be passed to
 \end{sloppypar}
 
 The landing pad may receive other arguments, for instance a switch value
-indicating the type of the exception. Four scratch registers are reserved
-for this use (\RDI, \RSI, \RDX, \RCX).
+indicating the type of the exception. Two scratch registers are reserved
+for this use (\RAX, \RDX).
 
 \subsubsection{Rules for Correct Inter-Language Operation}
 
