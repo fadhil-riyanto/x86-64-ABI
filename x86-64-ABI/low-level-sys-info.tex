@@ -450,6 +450,9 @@ palette 0 represents the initialized state and palette 1 consists of
 8 tile registers (\reg{tmm0} - \reg{tmm7}) of up to 1 KB size, which
 is controlled by a tile control register.
 
+Intel APX (Advanced Performance Extensions) provides 16 general purpose
+64-bit registers (\reg{r16} - \reg{r31}).
+
 This subsection discusses usage of each register.  Registers \RBP, \RBX and
 \reg{r12} through \reg{r15} ``belong'' to the calling function and the
 called function is required to preserve their values.  In other words,
@@ -746,8 +749,9 @@ return register & No \\
 \reg{r10} & temporary register, used for passing a function's static
 chain pointer & No \\
 \reg{r11} & temporary register & No\\
-\reg{r12--r14} & callee-saved registers & Yes \\
+\reg{r12}--\reg{r14} & callee-saved registers & Yes \\
 \reg{r15} & callee-saved register; optionally used as GOT base pointer & Yes \\
+\reg{r16}--\reg{r31} & temporary registers & No\\
 \reg{xmm0}--\reg{xmm1} & used to pass and return floating point
 arguments & No\\
 \reg{xmm2}--\reg{xmm7} & used to pass floating point arguments & No\\
@@ -2528,6 +2532,7 @@ Upper Vector Registers 16--31   & 67-82 & \reg{xmm16}--\reg{xmm31} \\
 Reserved                        & 83-117 & \\
 Vector Mask Registers 0--7      & 118-125 & \reg{k0}--\reg{k7} \\
 Reserved                        & 126-129 & \\
+APX Integer Registers 16-31     & 130-145 &\reg{r16}--\reg{r31}\\
 \end{tabular}
 \end{center}
 \Hrule
