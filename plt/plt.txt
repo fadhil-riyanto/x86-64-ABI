@@ -1,5 +1,6 @@
 Procedure Linkage Table (PLT) is used to call external functions defined
-in shared libraries.  For PLT, which satisfies the following conditions:
+in executables or shared libraries.  For PLT, which satisfies the following
+conditions:
 
 1. PLT entries transfer control to external functions via indirect branch
 over the corresponding entry in Global Offset Table (GOT) referenced by
@@ -15,14 +16,14 @@ or
   jmp     *foo@GOTPCREL(%rip)
   nop
   
-2. The only entry point of a PLT entry is the first byte of the entry.
-3. When resolving R_X86_64_JUMP_SLOT relocation to update the GOT entry,
+2. All such PLT entries have the same layout.
+3. The only entry point of a PLT entry is the first byte of the entry.
+4. All entries have the same size and are aligned to the entry size.
+5. When resolving R_X86_64_JUMP_SLOT relocation to update the GOT entry,
 dynamic linker ignores the r_addend field of R_X86_64_JUMP_SLOT
 relocation.  Starting from glibc 2.33 branch, r_addend is ignored by
 
 f8587a6189 x86-64: Ignore r_addend for R_X86_64_GLOB_DAT/R_X86_64_JUMP_SLOT
-
-4. All entries have the same size and are aligned to the entry size.
 
 define dynamic tags:
 
@@ -34,7 +35,19 @@ DT_X86_64_PLT: The address of PLT.
 DT_X86_64_PLTSZ: The total size, in bytes, of PLT.
 DT_X86_64_PLTENT: The size, in bytes, of a PLT entry.
 
-Since the r_addend field of R_X86_64_JUMP_SLOT relocation is ignored, it
-is repurposed to store the offset, in bytes, of the indirect branch in the
-corresponding PLT entry.  Together, they can be used by dynamic linker to
-rewrite PLT entry.
+When the r_addend field of R_X86_64_JUMP_SLOT relocation is ignored, it
+is repurposed to store the offset, in bytes, of the indirect branch in
+the corresponding PLT entry.
+
+If dynamic linker is allowed to
+
+1. Change PLT to writable and non-executable.
+2. Update PLT.
+3. Change PLT back to read-only and executable.
+
+dynamic linker may change indirect branch in PLT entries to direct branch
+when
+
+1. The PLT entry can accommodate 32-bit direct branch.
+2. The indirect branch address stored in the GOT entry can be reached
+by direct branch.
