@@ -1412,12 +1412,12 @@ that are of general interest:
 
 \item[\textindex{Medium code model}]
 
-  In the medium model, the data section is split into two parts --- the
-  data section still limited in the same way as in the small code model
-  and the large data section having no limits except for available
+  The data sections are split into two parts --- the regular data
+  sections still limited in the same way as in the small code model
+  and the large data sections having no limits except for available
   addressing space.  The program layout must be set in a way so that
   large data sections (\code{.ldata}, \code{.lrodata}, \code{.lbss})
-  come after the text and data sections.
+  are not between regular text and data sections.
 
   This model requires the compiler to use \code{movabs} instructions
   to access large static data and to load addresses into registers, but
@@ -1432,6 +1432,10 @@ that are of general interest:
 
   The large code model makes no assumptions about addresses and sizes
   of sections.
+
+  Although not strictly necessary, the data sections can be split into
+  normal and large parts like in the medium model, to improve
+  interoperability.
 
   The compiler is required to use the \code{movabs} instruction, as in
   the medium code model, even for dealing with addresses inside the
