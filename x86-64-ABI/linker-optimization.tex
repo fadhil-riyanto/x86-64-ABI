@@ -66,8 +66,9 @@ into an infinite loop at run-time.
 \label{opt_gotpcrelx}
 
 The \xARCH instruction encoding supports converting certain instructions
-on memory operand with \texttt{R_X86_64_GOTPCRELX} or
-\texttt{R_X86_64_REX_GOTPCRELX} relocations against symbol, \texttt{foo},
+on memory operand with \texttt{R_X86_64_GOTPCRELX},
+\texttt{R_X86_64_REX_GOTPCRELX} or \texttt{R_X86_64_REX2_GOTPCRELX}
+relocations against symbol, \texttt{foo},
 into a different form on immediate operand if \texttt{foo} is defined
 locally and the relocation addend is -4.
 

@@ -486,6 +486,7 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{Deprecated} & 40 & & \\
       \texttt{R_X86_64_GOTPCRELX} & 41 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_REX_GOTPCRELX} & 42 & \textit{word32} & \texttt{G + GOT + A - P} \\
+      \texttt{R_X86_64_REX2_GOTPCRELX} & 43 & \textit{word32} & \texttt{G + GOT + A - P} \\
      \cline{1-4}
     \multicolumn{4}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
     \multicolumn{4}{l}{\small $^{\dagger\dagger}$ This relocation only
@@ -538,8 +539,9 @@ instructions:
 where \code{binop} is one of \code{adc}, \code{add}, \code{and},
 \code{cmp}, \code{or}, \code{sbb}, \code{sub}, \code{xor}
 instructions, the \texttt{R_X86_64_GOTPCRELX} relocation,
-or the \texttt{R_X86_64_REX_GOTPCRELX} relocation if the
-\code{REX} prefix is present, should be generated,
+the \texttt{R_X86_64_REX_GOTPCRELX} relocation if the
+\code{REX} prefix is present, or the \texttt{R_X86_64_REX2_GOTPCRELX}
+relocation if the \code{REX2} prefix is present should be generated,
 instead of the \texttt{R_X86_64_GOTPCREL} relocation.  See also
 section~\ref{opt_gotpcrelx}.
 \end{sloppypar}
