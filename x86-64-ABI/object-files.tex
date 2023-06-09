@@ -488,6 +488,7 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{R_X86_64_REX_GOTPCRELX} & 42 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_CODE_4_GOTPCRELX} & 43 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_CODE_4_GOTTPOFF} & 44 & \textit{word32} &  \\
+      \texttt{R_X86_64_CODE_4_GOTPC32_TLSDESC} & 45 & \textit{word32} &  \\
      \cline{1-4}
     \multicolumn{4}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
     \multicolumn{4}{l}{\small $^{\dagger\dagger}$ This relocation only
@@ -586,6 +587,10 @@ writing.  A description can be found in the document ``Thread-Local
 Storage Descriptors for IA32 and AMD64/EM64T''\footnote{This document
   is currently available via
   \raggedright\url{http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.
+\texttt{R_X86_64_CODE_4_GOTPC32_TLSDESC} should be generated, instead of
+\texttt{R_X86_64_GOTPC32_TLSDESC}, if the instruction starts at 4 bytes
+before the relocation offset and linker optimization must take the
+different instruction encoding into account.
 \end{sloppypar}
 
 In order to make this document self-contained, a description of the
