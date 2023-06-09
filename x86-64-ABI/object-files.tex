@@ -487,6 +487,7 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{R_X86_64_GOTPCRELX} & 41 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_REX_GOTPCRELX} & 42 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_REX2_GOTPCRELX} & 43 & \textit{word32} & \texttt{G + GOT + A - P} \\
+      \texttt{R_X86_64_REX2_GOTTPOFF} & 44 & \textit{word32} &  \\
      \cline{1-4}
     \multicolumn{4}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
     \multicolumn{4}{l}{\small $^{\dagger\dagger}$ This relocation only
@@ -572,7 +573,10 @@ of the Thread-Local Storage ABI extensions and are documented in the
 document called ``ELF Handling for Thread-Local
 Storage''\footnote{This document is currently available via
   \raggedright\url{http://www.akkadia.org/drepper/tls.pdf}}\index{Thread-Local
-  Storage}.  The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
+  Storage}.  \texttt{R_X86_64_REX2_GOTTPOFF} should be generated,
+instead of \texttt{R_X86_64_GOTTPOFF}, if the \code{RE2} prefix is present
+and linker optimization must take the \code{REX2} prefix into account.
+The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
 \texttt{R_X86_64_TLSDESC_CALL} and \texttt{R_X86_64_TLSDESC} are also
 used for Thread-Local Storage, but are not documented there as of this
 writing.  A description can be found in the document ``Thread-Local
