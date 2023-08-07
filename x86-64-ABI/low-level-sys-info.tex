@@ -891,6 +891,45 @@ func (e, f, s, g, h, ld, m, y, z, n, i, j, k);\\
 \Hrule
 \end{figure}
 
+\subsection{Alternative Function Calling Sequences}
+
+Compilers may support alternative calling sequences with different
+performance characteristics.
+
+\begin{enumerate}
+\item Compilers that support the \verb|__preserve_most__| function
+  attribute use a different convention for preserving registers
+  calling or compiling functions annotated with this attribute.
+
+  With this calling convention, registers \RAX to \RDX, \RDI, \RSI,
+  \RBP, \RSP, \reg{r8} to \reg{r10}, and \reg{r12} to \reg{r15} are
+  not modified by the caller.  Registers used for passing arguments
+  are preserved by the called function, but registers used for
+  returning results are not.  Functions returning void preserve \RAX.
+  The vector and flags registers, and the red zone are not preserved.
+  Assumptions regarding CPU states are not affected by this function
+  attribute (for example, the direction flag must still be cleared
+  when a \verb|__preserve_most__| is called, and the usual stack
+  alignment rules apply).
+
+  If a function defined with \verb|__preserve_most__| calls a function
+  which lacks the attribute, the first function needs to save the
+  registers clobbered by the calling sequence for the second function,
+  so that the \verb|__preserve_most__| registers are still preserved
+  from the point of view of the first functions' caller.
+
+  Compilers which ignore the \verb|__preserve_most__| attribute for
+  function calls produce compatible code, but compiler support is
+  required for compiling function definitions.
+
+  If the caller makes use of the \verb|__preserve_most__| attribute,
+  this calling convention has limited compatibility with dynamic
+  linking.  It is recommended to avoid calling such functions through
+  PLT stubs, or to disable lazy binding.  The generic function
+  interception interception part of run-time dynamic linker auditing
+  may not handle this calling convention correctly.
+\end{enumerate}
+
 \section{Operating System Interface}
 
 \subsection{Exception Interface}
