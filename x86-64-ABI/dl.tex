@@ -88,6 +88,61 @@ Dynamic section entries give information to the dynamic linker. Some
 of this information is processor-specific, including the interpretation
 of some entries in the dynamic structure.
 
+The following optional \xARCH Dynamic Array Tags are defined:
+
+\begin{table}[H]
+\Hrule
+  \caption{Optional Dynamic Array Tags, d_tag}
+  \begin{center}
+    \begin{tabular}[t]{l|l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} &
+        \multicolumn{1}{c}{d_un} \\
+      \hline
+      \texttt{DT_X86_64_PLT} & \texttt{DT_LOPROC + 0} & \texttt{d_ptr} \\
+      \texttt{DT_X86_64_PLTSZ} & \texttt{DT_LOPROC + 1} & \texttt{d_val} \\
+      \texttt{DT_X86_64_PLTENT} & \texttt{DT_LOPROC + 3} & \texttt{d_val} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+\begin{description}
+ \item[DT_X86_64_PLT]
+   The address of the procedure linkage table.
+ \item[DT_X86_64_PLTSZ]
+   The total size, in bytes, of the procedure linkage table.
+ \item[DT_X86_64_PLTENT]
+   The size, in bytes, of a procedure linkage table entry.
+\end{description}
+
+\texttt{DT_X86_64_PLT}, \texttt{DT_X86_64_PLTSZ} and
+\texttt{DT_X86_64_PLTENT} are provided only if
+
+\begin{itemize}
+ \item The procedure linkage table entries transfer control to external
+  functions via indirect branch over the corresponding entry in the global
+  offset table referenced by the \code{r_offset} field of the
+  \texttt{R_X86_64_JUMP_SLOT} relocation.  The \code{r_addend} field of
+  the \texttt{R_X86_64_JUMP_SLOT} relocation stores the procedure linkage
+  table offset of indirect branch in the corresponding procedure linkage
+  table entry.
+  \item All such procedure linkage table entries have the same layout.
+   Each entry starts with an indirect branch over the global offset table
+   entry.  An \code{ENDBR64} instruction may precede the indirect branch.
+   There should be no functional side effect when the indirect branch is
+   replaced by a direct branch.
+  \item The only entry point of a procedure linkage table entry is the
+   first byte of the entry.
+  \item All entries have the same size and are aligned to the entry size.
+\end{itemize}
+
+If permitted, using \texttt{DT_X86_64_PLT}, \texttt{DT_X86_64_PLTSZ} and
+\texttt{DT_X86_64_PLTENT} together with the \code{r_offset} and
+\code{r_addend} fields of \texttt{R_X86_64_JUMP_SLOT} relocation, the
+dynamic linker may retrieve the indirect branch target address stored at
+the global offset table entry and rewrite the indirect branch in the
+procedure linkage table entry to a direct branch.
+
 \subsubsection{Global Offset Table (GOT)}
 \label{got}
 
