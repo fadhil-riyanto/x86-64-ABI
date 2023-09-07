@@ -572,7 +572,10 @@ of the Thread-Local Storage ABI extensions and are documented in the
 document called ``ELF Handling for Thread-Local
 Storage''\footnote{This document is currently available via
   \raggedright\url{http://www.akkadia.org/drepper/tls.pdf}}\index{Thread-Local
-  Storage}.  The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
+  Storage}.  \texttt{R_X86_64_GOTTPOFF} should be generated only if
+the instruction starts at 3 bytes before the relocation offset where
+linker expects a \code{REX} byte.
+The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
 \texttt{R_X86_64_TLSDESC_CALL} and \texttt{R_X86_64_TLSDESC} are also
 used for Thread-Local Storage, but are not documented there as of this
 writing.  A description can be found in the document ``Thread-Local
