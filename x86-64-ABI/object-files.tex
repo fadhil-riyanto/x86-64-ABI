@@ -489,6 +489,7 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{R_X86_64_CODE_4_GOTPCRELX} & 43 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_CODE_4_GOTTPOFF} & 44 & \textit{word32} &  \\
       \texttt{R_X86_64_CODE_4_GOTPC32_TLSDESC} & 45 & \textit{word32} &  \\
+      \texttt{R_X86_64_CODE_6_GOTTPOFF} & 46 & \textit{word32} &  \\
      \cline{1-4}
     \multicolumn{4}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
     \multicolumn{4}{l}{\small $^{\dagger\dagger}$ This relocation only
@@ -578,8 +579,11 @@ Storage''\footnote{This document is currently available via
 the instruction starts at 3 bytes before the relocation offset where
 linker expects a \code{REX} byte.  \texttt{R_X86_64_CODE_4_GOTTPOFF}
 should be generated, instead of \texttt{R_X86_64_GOTTPOFF}, if the
-instruction starts at 4 bytes before the relocation offset and linker
-optimization must take the different instruction encoding into account.
+instruction starts at 4 bytes before the relocation offset.
+\texttt{R_X86_64_CODE_6_GOTTPOFF} should be generated, instead of
+\texttt{R_X86_64_GOTTPOFF}, if the instruction starts at 6 bytes before
+the relocation offset.  Linker optimization must take the different
+instruction encoding into account.
 The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
 \texttt{R_X86_64_TLSDESC_CALL} and \texttt{R_X86_64_TLSDESC} are also
 used for Thread-Local Storage, but are not documented there as of this
