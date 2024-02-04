@@ -489,6 +489,12 @@ or \texttt{Elf32_Rel} relocation entries.
       \texttt{R_X86_64_CODE_4_GOTPCRELX} & 43 & \textit{word32} & \texttt{G + GOT + A - P} \\
       \texttt{R_X86_64_CODE_4_GOTTPOFF} & 44 & \textit{word32} &  \\
       \texttt{R_X86_64_CODE_4_GOTPC32_TLSDESC} & 45 & \textit{word32} &  \\
+      \texttt{R_X86_64_CODE_5_GOTPCRELX} & 46 & \textit{word32} & \texttt{G + GOT + A - P} \\
+      \texttt{R_X86_64_CODE_5_GOTTPOFF} & 47 & \textit{word32} &  \\
+      \texttt{R_X86_64_CODE_5_GOTPC32_TLSDESC} & 48 & \textit{word32} &  \\
+      \texttt{R_X86_64_CODE_6_GOTPCRELX} & 49 & \textit{word32} & \texttt{G + GOT + A - P} \\
+      \texttt{R_X86_64_CODE_6_GOTTPOFF} & 50 & \textit{word32} &  \\
+      \texttt{R_X86_64_CODE_6_GOTPC32_TLSDESC} & 51 & \textit{word32} &  \\
      \cline{1-4}
     \multicolumn{4}{l}{\small $^\dagger$ This relocation is used only for LP64.}\\
     \multicolumn{4}{l}{\small $^{\dagger\dagger}$ This relocation only
@@ -537,16 +543,22 @@ instructions:
 \end{footnotesize}
 
 \noindent
-\begin{sloppypar}
 where \code{binop} is one of \code{adc}, \code{add}, \code{and},
 \code{cmp}, \code{or}, \code{sbb}, \code{sub}, \code{xor}
-instructions, the \texttt{R_X86_64_GOTPCRELX} relocation,
-the \texttt{R_X86_64_REX_GOTPCRELX} relocation if the
-\code{REX} prefix is present, or the \texttt{R_X86_64_CODE_4_GOTPCRELX}
-relocation if the instruction starts at 4 bytes before the relocation
-offset, should be generated, instead of the \texttt{R_X86_64_GOTPCREL}
-relocation.  See also section~\ref{opt_gotpcrelx}.
-\end{sloppypar}
+instructions, the following \texttt{GOTPCRELX} relocations should be
+generated (see also section~\ref{opt_gotpcrelx}):
+\begin{description}
+\item \texttt{R_X86_64_GOTPCRELX} The instruction starts at 2 bytes
+      before the relocation offset.
+\item \texttt{R_X86_64_REX_GOTPCRELX} The instruction starts at 3 bytes
+      before the relocation offset with the \code{REX} prefix.
+\item \texttt{R_X86_64_CODE_4_GOTPCRELX} The instruction starts at 4
+      bytes before the relocation offset.
+\item \texttt{R_X86_64_CODE_5_GOTPCRELX} The instruction starts at 5
+      bytes before the relocation offset.
+\item \texttt{R_X86_64_CODE_6_GOTPCRELX} The instruction starts at 6
+      bytes before the relocation offset.
+\end{description}
 
 \begin{sloppypar}
 The \texttt{R_X86_64_32} and \texttt{R_X86_64_32S} relocations truncate
@@ -564,7 +576,6 @@ added for documentation purposes.  The \texttt{R_X86_64_16}, and
 resp. 8-bits.
 \end{sloppypar}
 
-\begin{sloppypar}
 The relocations \texttt{R_X86_64_DTPMOD64},
 \texttt{R_X86_64_DTPOFF64}, \texttt{R_X86_64_TPOFF64},
 \texttt{R_X86_64_TLSGD}, \texttt{R_X86_64_TLSLD},
@@ -574,24 +585,41 @@ of the Thread-Local Storage ABI extensions and are documented in the
 document called ``ELF Handling for Thread-Local
 Storage''\footnote{This document is currently available via
   \raggedright\url{http://www.akkadia.org/drepper/tls.pdf}}\index{Thread-Local
-  Storage}.  \texttt{R_X86_64_GOTTPOFF} should be generated only if
-the instruction starts at 3 bytes before the relocation offset where
-linker expects a \code{REX} byte.  \texttt{R_X86_64_CODE_4_GOTTPOFF}
-should be generated, instead of \texttt{R_X86_64_GOTTPOFF}, if the
-instruction starts at 4 bytes before the relocation offset and linker
-optimization must take the different instruction encoding into account.
+  Storage}.  The following \texttt{GOTTPOFF} relocations should be
+generated:
+\begin{description}
+\item \texttt{R_X86_64_GOTTPOFF} The instruction starts at 3 bytes
+      before the relocation offset with the \code{REX} byte.
+\item \texttt{R_X86_64_CODE_4_GOTTPOFF} The instruction starts at 4 bytes
+      before the relocation offset.
+\item \texttt{R_X86_64_CODE_5_GOTTPOFF} The instruction starts at 5 bytes
+      before the relocation offset.
+\item \texttt{R_X86_64_CODE_6_GOTTPOFF} The instruction starts at 6 bytes
+      before the relocation offset.
+\end{description}
+Linker optimization must take the different instruction encoding into
+account.
+
 The relocations \texttt{R_X86_64_GOTPC32_TLSDESC},
 \texttt{R_X86_64_TLSDESC_CALL} and \texttt{R_X86_64_TLSDESC} are also
 used for Thread-Local Storage, but are not documented there as of this
 writing.  A description can be found in the document ``Thread-Local
 Storage Descriptors for IA32 and AMD64/EM64T''\footnote{This document
   is currently available via
-  \raggedright\url{http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.
-\texttt{R_X86_64_CODE_4_GOTPC32_TLSDESC} should be generated, instead of
-\texttt{R_X86_64_GOTPC32_TLSDESC}, if the instruction starts at 4 bytes
-before the relocation offset and linker optimization must take the
-different instruction encoding into account.
-\end{sloppypar}
+  \raggedright\url{http://www.fsfla.org/~lxoliva/writeups/TLS/RFC-TLSDESC-x86.txt}}.  The following \texttt{GOTPC32_TLSDESC} relocations should be
+generated:
+\begin{description}
+\item \texttt{R_X86_64_GOTPC32_TLSDESC} The instruction starts at 3 bytes
+      before the relocation offset.
+\item \texttt{R_X86_64_CODE_4_GOTPC32_TLSDESC} The instruction starts at
+      4 bytes before the relocation offset.
+\item \texttt{R_X86_64_CODE_5_GOTPC32_TLSDESC} The instruction starts at
+      5 bytes before the relocation offset.
+\item \texttt{R_X86_64_CODE_6_GOTPC32_TLSDESC} The instruction starts at
+      6 bytes before the relocation offset.
+\end{description}
+Linker optimization must take the different instruction encoding into
+account.
 
 In order to make this document self-contained, a description of the
 TLS relocations follows.
