@@ -2497,6 +2497,7 @@ number mapping for the \xARCH processor family.%
 \begin{figure}
 \Hrule
 \caption{DWARF Register Number Mapping} \label{tbl-reg-num-map}
+\myfontsize
 \begin{center}
 \begin{tabular}{l|r|l}
 \multicolumn{1}{c}{Register Name}&\multicolumn{1}{c}{Number}&\multicolumn{1}{c}{Abbreviation}\\
@@ -2537,6 +2538,8 @@ Reserved                        & 83-117 & \\
 Vector Mask Registers 0--7      & 118-125 & \reg{k0}--\reg{k7} \\
 Reserved                        & 126-129 & \\
 APX Integer Registers 16-31     & 130-145 &\reg{r16}--\reg{r31}\\
+Tile Registers 0--7             & 146-153 & \reg{tmm0}--\reg{tmm7} \\
+Tile Control Register           & 154   & \reg{tilecfg} \\
 \end{tabular}
 \end{center}
 \Hrule
