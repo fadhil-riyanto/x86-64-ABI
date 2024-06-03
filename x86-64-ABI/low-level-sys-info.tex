@@ -2337,7 +2337,7 @@ prevent the initialization of the XMM unit.
 \reg{xmm0} & $48$ \\
 \reg{xmm1} & $64$ \\
 \dots &  \\
-\reg{xmm15} & $288$ \\
+\reg{xmm7} & $160$ \\
 \end{tabular}
 \end{center}
 \Hrule
@@ -2391,7 +2391,7 @@ The element points to the start of the register save area.
 The element holds the offset in bytes from \code{reg_save_area} to the
 place where the next available floating point
 argument register is saved.  In case all argument registers have been exhausted,
-it is set to the value 304 ($6*8+16*16$).
+it is set to the value 176 ($6*8+8*16$).
 \end{description}
 
 \subsubsection{The \codeindex{va_arg} Macro}
@@ -2408,7 +2408,7 @@ and \code{num_fp} to hold the number of floating point registers needed.
 \item
 Verify whether arguments fit into registers.
 In the case:
-$$\code{l->gp_offset} > 48 - \code{num_gp} * 8$$ or $$\code{l->fp_offset} > 304 - \code{num_fp} * 16$$
+$$\code{l->gp_offset} > 48 - \code{num_gp} * 8$$ or $$\code{l->fp_offset} > 176 - \code{num_fp} * 16$$
 go to step~\ref{stack}.
 \item
   Fetch \code{type} from \code{l->reg_save_area} with an offset of
