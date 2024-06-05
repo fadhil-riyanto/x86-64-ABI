@@ -434,6 +434,120 @@ finalization) functions specified by \codeindex{DT_FINI} and
 The user program plays no further part in executing the initialization
 and termination functions specified by these dynamic tags.
 
+\section {Program Property}
+
+The following processor-specific program property type ranges
+\footnote{See {\bf Linux Extensions to gABI} at
+\url{https://gitlab.com/x86-psABIs/Linux-ABI}} are defined:
+
+\begin{table}[H]
+\Hrule
+  \caption{Program Property Type Ranges}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_UINT32_AND_LO} & \texttt{0xc0000002} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_AND_HI} & \texttt{0xc0007fff} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_LO} & \texttt{0xc0008000} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_HI} & \texttt{0xc000ffff} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_AND_LO} & \texttt{0xc0010000} \\
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_AND_HI} & \texttt{0xc0017fff} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+The \code{pr_data} field of each property contains a 4-byte unsigned
+integer.
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_UINT32_AND_LO..GNU_PROPERTY_X86_UINT32_AND_HI]
+   A bit in the output \code{pr_data} field is set only if it is set in
+   all relocatable input \code{pr_data} fields.  If all bits in the
+   the output \code{pr_data} field are zero, this property should be
+   removed from output.  If the bit is 1, all input relocatables have
+   the feature.  If the bit is 0 or the property is missing, it is
+   unknown whether all input relocatables have the feature.
+ \item[GNU_PROPERTY_X86_UINT32_OR_LO..GNU_PROPERTY_X86_UINT32_OR_HI]
+   A bit in the output \code{pr_data} field is set if it is set in any
+   relocatable input \code{pr_data} fields.  If all bits in the
+   the output \code{pr_data} field are zero, this property should be
+   removed from output.  If the bit is 1, some input relocatables have
+   the feature.  If the bit is 0 or the property is missing, it is
+   unknown whether any input relocatables have the feature.
+ \item[GNU_PROPERTY_X86_UINT32_OR_AND_LO..GNU_PROPERTY_X86_UINT32_OR_AND_HI]
+   A bit in the output \code{pr_data} field is set if it is set in any
+   relocatable input \code{pr_data} fields and this property is present
+   in all relocatable input files.  A missing property implies that its
+   bits have unknown values.  When all bits in the the output
+   \code{pr_data} field are zero, this property should not be removed
+   from output to indicate it has zero in all bits.  If the property
+   is in output, all input relocatables have the property.  If the bit
+   is 1, some input relocatables have the feature.  If the bit is 0,
+   none of input relocatables have the feature.
+\end{description}
+
+The following property types are defined:
+
+\begin{table}[H]
+\Hrule
+  \caption{Program Property Types}
+  \begin{center}
+    \myfontsize
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} &
+     \texttt{GNU_PROPERTY_X86_UINT32_OR_LO + 2} \\
+    \end{tabular}
+  \end{center}
+\Hrule
+\end{table}
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_ISA_1_NEEDED] The x86 instruction sets indicated
+   by the corresponding bits are needed in program and they must be
+   supported by the hardware.  Loader may refuse to load the program
+   whose \texttt{GNU_PROPERTY_X86_ISA_1_NEEDED} ISAs aren't supported
+   by the hardware.
+\end{description}
+
+The following bits are defined for \code{GNU_PROPERTY_X86_ISA_1_NEEDED}
+based on micro-architecture levels
+in table~\ref{features}:
+
+\begin{table}[H]
+\Hrule
+  \caption{Bit Flags For X86 Instruction Sets}
+  \begin{center}
+    \begin{tabular}[t]{l|l}
+      \multicolumn{1}{c}{Name} & \multicolumn{1}{c}{Value} \\
+      \hline
+     \texttt{GNU_PROPERTY_X86_ISA_1_BASELINE} & \texttt{1U << 0} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_V2} & \texttt{1U << 1} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_V3} & \texttt{1U << 2} \\
+     \texttt{GNU_PROPERTY_X86_ISA_1_V4} & \texttt{1U << 3} \\
+    \cline{1-2}
+    \end{tabular}
+  \end{center}
+\end{table}
+
+\begin{description}
+ \item[GNU_PROPERTY_X86_ISA_1_BASELINE] This indicates that \code{baseline}
+   micro-architecture level must be supported by the hardware
+   (see table~\ref{levels}).
+ \item[GNU_PROPERTY_X86_ISA_1_V2] This indicates that micro-architecture
+   level \code{x86-64-v2} must be supported by the hardware
+   (see table~\ref{levels}).
+ \item[GNU_PROPERTY_X86_ISA_1_V3] This indicates that micro-architecture
+   level \code{x86-64-v3} must be supported by the hardware
+   (see table~\ref{levels}).
+ \item[GNU_PROPERTY_X86_ISA_1_V4] This indicates that micro-architecture
+   level \code{x86-64-v4} must be supported by the hardware
+   (see table~\ref{levels}).
+\end{description}
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "abi"
